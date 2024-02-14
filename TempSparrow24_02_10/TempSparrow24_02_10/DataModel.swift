@@ -7,14 +7,30 @@
 
 import Foundation
 
-struct DataModel {
-	let id: UUID = UUID()
+final class DataModel {
+	let id: UUID
 	let number: Int
-	var isChecked: Bool = false
+	var isChecked: Bool
 	
 	var title: String {
 		"\(number)"
 	}
+	
+	init(number: Int, isChecked: Bool = false) {
+		self.id = UUID()
+		self.number = number
+		self.isChecked = isChecked
+	}
 }
 
-extension DataModel: Equatable {}
+extension DataModel: Hashable {
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+	}
+}
+
+extension DataModel: Equatable {
+	static func == (lhs: DataModel, rhs: DataModel) -> Bool {
+		lhs.id == rhs.id
+	}
+}
